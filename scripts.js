@@ -14,6 +14,12 @@ function accordionHandler() {
 	var navlink = navlinks.has('a[href=#'+panel.attr('id')+']');
 	navlink.toggleClass('active');
 	navlinks.not(navlink).removeClass('active');
+	// save the current panel
+	if(panel.hasClass('active')){
+		saveCurrent('#'+panel.attr('id'));
+	} else {
+		saveCurrent("#");
+	}
 }
 
 function tabsHandler(e) {
@@ -28,6 +34,8 @@ function tabsHandler(e) {
 	// select corresponding navlink
 	navlinks.removeClass('active');
 	$(this).parent().addClass('active');
+	// save the current panel
+	saveCurrent($(this).attr('href'));
 }
 
 function switchView() {
@@ -45,6 +53,7 @@ function switchView() {
 			if (!panels.is('.active')){
 				navlinks.first().addClass('active');
 				panels.first().addClass('active');
+				saveCurrent("#"+panels.first().attr('id'));
 			}
 		}
 	// if the viewport is smaller than minWidth
@@ -63,7 +72,23 @@ function switchView() {
 	}
 }
 
+function saveCurrent(id){
+	// for newer browsers
+	if ( window.history && window.history.replaceState ) {
+		window.history.replaceState(null,document.title,id);
+	// for IE<10 and older browsers
+	} else {
+		window.location.hash = id;
+	}
+}
+
 // load the right view at init
-$(document).ready(switchView);
+$(document).ready(function() {
+	// preselect a panel
+	$(window.location.hash).addClass('active');
+	$('nav a[href=' + window.location.hash + ']').parent().addClass('active');
+	// init the right view
+	switchView();
+});
 // load the right view when the viewport changes
 $(window).resize(switchView);
