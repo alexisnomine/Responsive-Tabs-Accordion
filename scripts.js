@@ -1,3 +1,9 @@
+/* 
+Responsive Tabs/Accordion experiment
+Author: Alexis Nominé
+Website: alexis.nomine.fr/en/blog/2013/04/08/responsive-css3-jquery-switching-accordion-tabs/
+*/
+
 var panels = $('#profiles article'); // cache the profiles
 var navlinks = $('nav li'); // cache the nav links
 var view = ""; // store the actual view
